@@ -1,0 +1,39 @@
+
+services:
+  db:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+      
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: user-service-app
+    container_name: user-service-app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: npm run start
+  
+volumes:
+  mongo-data:
+    driver: local
+    
