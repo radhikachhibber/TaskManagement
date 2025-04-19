@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import redis from "../redisClient.js";
 import { v4 as uuidv4 } from 'uuid';
+import { publishEvent } from "../kafka.js";
 
 const register = async (req, res) => {
     try{
@@ -21,6 +22,8 @@ const register = async (req, res) => {
     
     // Create new user
     await User.create({ name, password: hashPassword, email });
+
+    await publishEvent('user.created', { name, email });
     res.status(201).json({ message: 'User registered successfully', user: { name } });
 }
     catch(err){
