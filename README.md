@@ -17,7 +17,7 @@ A simple and scalable **User Service** built with **Node.js**, implementing **JW
 - **Redis** (via `ioredis`)
 - **JWT** for secure auth
 - **Docker & Docker Compose**
-
+- **kafkajs & kafkaui**
 ---
 
 The service will be available at http://localhost:3000
